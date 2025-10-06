@@ -12,6 +12,7 @@ function App() {
   const [cdps, setCdps] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [lastModified, setLastModified] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -31,12 +32,29 @@ function App() {
     }
   };
 
+  const checkForUpdates = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/last-modified`);
+      const newModified = res.data.last_modified;
+
+      if (lastModified !== null && newModified !== lastModified) {
+        console.log('Data changed, refreshing...');
+        await fetchData();
+      }
+      setLastModified(newModified);
+    } catch (error) {
+      console.error('Error checking for updates:', error);
+    }
+  };
+
   useEffect(() => {
+    // Initial load
     fetchData();
-    // Refresh data every 60 seconds
-    const interval = setInterval(fetchData, 60000);
+
+    // Check for updates every 5 seconds (very light request)
+    const interval = setInterval(checkForUpdates, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [lastModified]);
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('fr-FR', {

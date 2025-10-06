@@ -140,6 +140,25 @@ def get_objectif():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/last-modified', methods=['GET'])
+def get_last_modified():
+    """Get the last modification timestamp of config.json."""
+    try:
+        if OFFLINE_MODE:
+            import os
+            mtime = os.path.getmtime(CONFIG_FILE_PATH)
+            return jsonify({'last_modified': mtime})
+        else:
+            # En mode online, utiliser le timestamp de la dernière sync
+            timestamp = database.get_last_update()
+            if timestamp:
+                from datetime import datetime
+                dt = datetime.fromisoformat(timestamp)
+                return jsonify({'last_modified': dt.timestamp()})
+            return jsonify({'last_modified': 0})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/admin/config', methods=['GET'])
 def get_admin_config():
     """Get the current config.json for admin interface."""
