@@ -33,8 +33,6 @@ instance/
 *.sqlite3
 
 # Environment variables
-.env
-.env.local
 
 # Google API credentials
 credentials.json
