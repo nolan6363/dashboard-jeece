@@ -66,5 +66,3 @@ docker-compose.override.yml
 *.log
 
 # Images (users will add their own)
-frontend/public/images/cdp/*
-frontend/public/images/logo.png

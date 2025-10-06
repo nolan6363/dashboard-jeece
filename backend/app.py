@@ -147,8 +147,11 @@ def get_admin_config():
         if not OFFLINE_MODE:
             return jsonify({'error': 'Admin interface only available in offline mode'}), 400
 
-        data = load_config_file()
-        return jsonify(data)
+        # Load the raw config file for admin interface
+        with open(CONFIG_FILE_PATH, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+
+        return jsonify(config)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
