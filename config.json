@@ -1,0 +1,90 @@
+{
+  "objectif_annuel": 100000,
+  "chiffre_affaire_total": 21212,
+  "chefs_projet": [
+    {
+      "nom": "Bruneau",
+      "prenom": "Benjamin",
+      "chiffre_affaire": 5460,
+      "photo_filename": "benjamin_bruneau.jpg"
+    },
+	{
+	  "nom": "Lindemans",
+	  "prenom": "Théo",
+	  "chiffre_affaire": 7980,
+	  "photo_filename": "theo_lindemans.jpg"
+	},
+    {
+      "nom": "Bricout",
+      "prenom": "Théodore",
+      "chiffre_affaire": 2328,
+      "photo_filename": "theodore_bricout.jpg"
+    },
+    {
+      "nom": "Zieba",
+      "prenom": "Noah",
+      "chiffre_affaire": 1260,
+      "photo_filename": "noah_zieba.jpg"
+    },
+    {
+      "nom": "De Crevoisier",
+      "prenom": "Axel",
+      "chiffre_affaire": 0,
+      "photo_filename": "axel_decrevoisier.jpg"
+    },
+    {
+      "nom": "Vallet",
+      "prenom": "Clément",
+      "chiffre_affaire": 0,
+      "photo_filename": "clement_vallet.jpg"
+    },
+    {
+      "nom": "Selitto",
+      "prenom": "Juliette",
+      "chiffre_affaire": 2510.40,
+      "photo_filename": "juliette_selitto.jpg"
+    },
+    {
+      "nom": "Francfort",
+      "prenom": "Sacha",
+      "chiffre_affaire": 0,
+      "photo_filename": "sacha_francfort.jpg"
+    },
+    {
+      "nom": "Bayon",
+      "prenom": "Nolan",
+      "chiffre_affaire": 0,
+      "photo_filename": "nolan_bayon.jpg"
+    },
+    {
+      "nom": "Margotteau",
+      "prenom": "Thomas",
+      "chiffre_affaire": 0,
+      "photo_filename": "thomas_margotteau.jpg"
+    },
+    {
+      "nom": "Blanchard",
+      "prenom": "Gauthier",
+      "chiffre_affaire": 0,
+      "photo_filename": "gauthier_blanchard.jpg"
+    },
+    {
+      "nom": "Michaud",
+      "prenom": "Marceau",
+      "chiffre_affaire": 7380,
+      "photo_filename": "marceau_michaud.jpg"
+    },
+    {
+      "nom": "Brosseau",
+      "prenom": "Antoine",
+      "chiffre_affaire": 0,
+      "photo_filename": "antoine_brosseau.jpg"
+    },
+    {
+      "nom": "Wipliez",
+      "prenom": "Aaron",
+      "chiffre_affaire": 0,
+      "photo_filename": "aaron_wipliez.jpg"
+    }
+  ]
+}
