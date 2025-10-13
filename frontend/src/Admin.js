@@ -10,6 +10,13 @@ function Admin() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
+  const [newCdp, setNewCdp] = useState({
+    nom: '',
+    prenom: '',
+    photo_filename: '',
+    chiffre_affaire: 0
+  });
+  const [photoFile, setPhotoFile] = useState(null);
 
   useEffect(() => {
     fetchConfig();
@@ -87,6 +94,86 @@ function Admin() {
     });
   };
 
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPhotoFile(file);
+      setNewCdp({
+        ...newCdp,
+        photo_filename: file.name
+      });
+    }
+  };
+
+  const handleAddCdp = async () => {
+    if (!newCdp.nom || !newCdp.prenom) {
+      setMessage('❌ Le nom et le prénom sont obligatoires');
+      return;
+    }
+
+    let photoFilename = newCdp.photo_filename;
+
+    // Upload photo if one was selected
+    if (photoFile) {
+      try {
+        const formData = new FormData();
+        formData.append('photo', photoFile);
+
+        const response = await fetch('/api/admin/upload-photo', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          photoFilename = result.filename;
+        } else {
+          setMessage('⚠️ Erreur lors de l\'upload de la photo, CDP ajouté sans photo');
+          photoFilename = '';
+        }
+      } catch (error) {
+        console.error('Error uploading photo:', error);
+        setMessage('⚠️ Erreur lors de l\'upload de la photo, CDP ajouté sans photo');
+        photoFilename = '';
+      }
+    }
+
+    const cdpToAdd = {
+      ...newCdp,
+      photo_filename: photoFilename
+    };
+
+    const updatedChefsProjet = [...config.chefs_projet, cdpToAdd];
+    setConfig({
+      ...config,
+      chefs_projet: updatedChefsProjet
+    });
+
+    // Reset form
+    setNewCdp({
+      nom: '',
+      prenom: '',
+      photo_filename: '',
+      chiffre_affaire: 0
+    });
+    setPhotoFile(null);
+
+    // Reset file input
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) fileInput.value = '';
+
+    setMessage('✅ CDP ajouté avec succès ! N\'oubliez pas de sauvegarder.');
+  };
+
+  const handleRemoveCdp = (index) => {
+    const updatedChefsProjet = config.chefs_projet.filter((_, i) => i !== index);
+    setConfig({
+      ...config,
+      chefs_projet: updatedChefsProjet
+    });
+    setMessage('✅ CDP supprimé. N\'oubliez pas de sauvegarder.');
+  };
+
   if (loading) {
     return <div className="admin-container"><p>Chargement...</p></div>;
   }
@@ -137,11 +224,70 @@ function Admin() {
         </section>
 
         <section className="admin-section">
+          <h2>➕ Ajouter un nouveau CDP</h2>
+          <div className="add-cdp-form">
+            <div className="form-row">
+              <div className="input-group">
+                <label>Nom *</label>
+                <input
+                  type="text"
+                  value={newCdp.nom}
+                  onChange={(e) => setNewCdp({ ...newCdp, nom: e.target.value })}
+                  placeholder="Nom du CDP"
+                />
+              </div>
+              <div className="input-group">
+                <label>Prénom *</label>
+                <input
+                  type="text"
+                  value={newCdp.prenom}
+                  onChange={(e) => setNewCdp({ ...newCdp, prenom: e.target.value })}
+                  placeholder="Prénom du CDP"
+                />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="input-group">
+                <label>Photo</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                />
+                {photoFile && <span className="file-name">📷 {photoFile.name}</span>}
+              </div>
+              <div className="input-group">
+                <label>Chiffre d'affaires initial (€)</label>
+                <input
+                  type="number"
+                  value={newCdp.chiffre_affaire}
+                  onChange={(e) => setNewCdp({ ...newCdp, chiffre_affaire: parseFloat(e.target.value) || 0 })}
+                  min="0"
+                  step="100"
+                  placeholder="0"
+                />
+              </div>
+            </div>
+            <button className="btn-add-cdp" onClick={handleAddCdp}>
+              ➕ Ajouter le CDP
+            </button>
+          </div>
+        </section>
+
+        <section className="admin-section">
           <h2>👥 Chiffre d'Affaires par CDP</h2>
           <div className="cdp-grid">
             {config.chefs_projet.map((cdp, index) => (
               <div key={index} className="cdp-item">
+                <button
+                  className="btn-remove-cdp"
+                  onClick={() => handleRemoveCdp(index)}
+                  title="Supprimer ce CDP"
+                >
+                  ✕
+                </button>
                 <label>{cdp.prenom} {cdp.nom}</label>
+                {cdp.photo_filename && <span className="photo-indicator">📷 {cdp.photo_filename}</span>}
                 <input
                   type="number"
                   value={cdp.chiffre_affaire}

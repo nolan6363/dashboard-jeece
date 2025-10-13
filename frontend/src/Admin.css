@@ -185,6 +185,78 @@
   cursor: not-allowed;
 }
 
+/* Add CDP Form */
+.add-cdp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.file-name {
+  font-size: 14px;
+  color: #48bb78;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.input-group input[type="file"] {
+  padding: 8px;
+  max-width: 100%;
+}
+
+.btn-add-cdp {
+  background: #48bb78;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  align-self: flex-start;
+}
+
+.btn-add-cdp:hover {
+  background: #38a169;
+}
+
+.btn-remove-cdp {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #e53e3e;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  opacity: 0.7;
+}
+
+.btn-remove-cdp:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.photo-indicator {
+  font-size: 12px;
+  color: #718096;
+  font-style: italic;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .admin-header {
@@ -199,5 +271,9 @@
 
   .admin-section {
     padding: 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
   }
 }

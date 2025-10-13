@@ -1,9 +1,10 @@
 import os
 import json
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
+from werkzeug.utils import secure_filename
 import database
 import google_sheets
 
@@ -16,6 +17,12 @@ CONFIG_FILE_PATH = os.getenv('CONFIG_FILE_PATH', '/app/config.json')
 SPREADSHEET_ID = os.getenv('GOOGLE_SPREADSHEET_ID', '')
 SHEET_RANGE = os.getenv('GOOGLE_SHEET_RANGE', 'Sheet1!A1:C100')
 UPDATE_INTERVAL_MINUTES = int(os.getenv('UPDATE_INTERVAL_MINUTES', '15'))
+UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', '/app/frontend/public/images/cdp')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
+def allowed_file(filename):
+    """Check if the file extension is allowed."""
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def load_config_file():
     """Load data from config.json file (offline mode)."""
@@ -195,6 +202,44 @@ def update_admin_config():
         database.log_update('success', f"[ADMIN] Config updated via web interface")
 
         return jsonify({'status': 'success', 'message': 'Configuration updated successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/admin/upload-photo', methods=['POST'])
+def upload_photo():
+    """Upload a CDP photo."""
+    try:
+        if not OFFLINE_MODE:
+            return jsonify({'error': 'Photo upload only available in offline mode'}), 400
+
+        # Check if the post request has the file part
+        if 'photo' not in request.files:
+            return jsonify({'error': 'No file part'}), 400
+
+        file = request.files['photo']
+
+        # If no file is selected
+        if file.filename == '':
+            return jsonify({'error': 'No selected file'}), 400
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+
+            # Create upload folder if it doesn't exist
+            os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+            # Save the file
+            file_path = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(file_path)
+
+            return jsonify({
+                'status': 'success',
+                'filename': filename,
+                'message': f'Photo {filename} uploaded successfully'
+            })
+        else:
+            return jsonify({'error': 'File type not allowed. Only images are accepted.'}), 400
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
