@@ -33,11 +33,17 @@ def load_config_file():
         total = config.get('chiffre_affaire_total', 0)
         cdp_list = config.get('chefs_projet', [])
         objectif = config.get('objectif_annuel', 100000)
+        objectif_decembre = config.get('objectif_decembre', 0)
+        wr = config.get('wr', 0)
+        autres_objectifs = config.get('autres_objectifs', [])
 
         return {
             'total': total,
             'cdp_list': cdp_list,
-            'objectif_annuel': objectif
+            'objectif_annuel': objectif,
+            'objectif_decembre': objectif_decembre,
+            'wr': wr,
+            'autres_objectifs': autres_objectifs
         }
     except Exception as e:
         print(f"Error loading config file: {e}")
@@ -60,7 +66,12 @@ def sync_data_from_sheets():
             data = google_sheets.fetch_kpi_data(SPREADSHEET_ID, SHEET_RANGE)
 
         # Save global KPI with objectif
-        database.save_kpi_global(data['total'], data.get('objectif_annuel', 100000))
+        database.save_kpi_global(
+            data['total'],
+            data.get('objectif_annuel', 100000),
+            data.get('objectif_decembre', 0),
+            data.get('wr', 0)
+        )
 
         # Save each CDP
         for cdp in data['cdp_list']:
@@ -70,6 +81,10 @@ def sync_data_from_sheets():
                 chiffre_affaire=cdp['chiffre_affaire'],
                 photo_filename=cdp.get('photo_filename')
             )
+
+        # Save autres objectifs
+        for obj in data.get('autres_objectifs', []):
+            database.save_autre_objectif(obj['nom'], obj['valeur'])
 
         # Log success
         mode = "OFFLINE" if OFFLINE_MODE else "ONLINE"
@@ -191,8 +206,17 @@ def update_admin_config():
         new_config = request.get_json()
 
         # Validate the structure
-        if 'objectif_annuel' not in new_config or 'chiffre_affaire_total' not in new_config or 'chefs_projet' not in new_config:
+        required_fields = ['objectif_annuel', 'chiffre_affaire_total', 'chefs_projet']
+        if not all(field in new_config for field in required_fields):
             return jsonify({'error': 'Invalid config structure'}), 400
+
+        # Ensure new fields exist with defaults
+        if 'objectif_decembre' not in new_config:
+            new_config['objectif_decembre'] = 0
+        if 'wr' not in new_config:
+            new_config['wr'] = 0
+        if 'autres_objectifs' not in new_config:
+            new_config['autres_objectifs'] = []
 
         # Save to config.json
         with open(CONFIG_FILE_PATH, 'w', encoding='utf-8') as f:

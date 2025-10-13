@@ -1,96 +1,99 @@
 {
-  "objectif_annuel": 100000,
-  "chiffre_affaire_total": 21212,
+  "autres_objectifs": [],
   "chefs_projet": [
     {
-      "nom": "Bruneau",
-      "prenom": "Benjamin",
       "chiffre_affaire": 5460,
-      "photo_filename": "benjamin_bruneau.jpg"
+      "nom": "Bruneau",
+      "photo_filename": "benjamin_bruneau.jpg",
+      "prenom": "Benjamin"
     },
-	{
-	  "nom": "Plane",
-	  "prenom": "Romain",
-	  "chiffre_affaire": 2100,
-	  "photo_filename": "romain_plane.jpg"
-	},
-	{
-	  "nom": "Lindemans",
-	  "prenom": "Théo",
-	  "chiffre_affaire": 7980,
-	  "photo_filename": "theo_lindemans.jpg"
-	},
     {
-      "nom": "Bricout",
-      "prenom": "Théodore",
+      "chiffre_affaire": 2100,
+      "nom": "Plane",
+      "photo_filename": "romain_plane.jpg",
+      "prenom": "Romain"
+    },
+    {
+      "chiffre_affaire": 7980,
+      "nom": "Lindemans",
+      "photo_filename": "theo_lindemans.jpg",
+      "prenom": "Théo"
+    },
+    {
       "chiffre_affaire": 2328,
-      "photo_filename": "theodore_bricout.jpg"
+      "nom": "Bricout",
+      "photo_filename": "theodore_bricout.jpg",
+      "prenom": "Théodore"
     },
     {
-      "nom": "Zieba",
-      "prenom": "Noah",
       "chiffre_affaire": 1260,
-      "photo_filename": "noah_zieba.jpg"
+      "nom": "Zieba",
+      "photo_filename": "noah_zieba.jpg",
+      "prenom": "Noah"
     },
     {
+      "chiffre_affaire": 0,
       "nom": "De Crevoisier",
-      "prenom": "Axel",
-      "chiffre_affaire": 0,
-      "photo_filename": "axel_decrevoisier.jpg"
+      "photo_filename": "axel_decrevoisier.jpg",
+      "prenom": "Axel"
     },
     {
+      "chiffre_affaire": 0,
       "nom": "Vallet",
-      "prenom": "Clément",
-      "chiffre_affaire": 0,
-      "photo_filename": "clement_vallet.jpg"
+      "photo_filename": "clement_vallet.jpg",
+      "prenom": "Clément"
     },
     {
+      "chiffre_affaire": 2510.4,
       "nom": "Selitto",
-      "prenom": "Juliette",
-      "chiffre_affaire": 2510.40,
-      "photo_filename": "juliette_selitto.jpg"
+      "photo_filename": "juliette_selitto.jpg",
+      "prenom": "Juliette"
     },
     {
+      "chiffre_affaire": 0,
       "nom": "Francfort",
-      "prenom": "Sacha",
-      "chiffre_affaire": 0,
-      "photo_filename": "sacha_francfort.jpg"
+      "photo_filename": "sacha_francfort.jpg",
+      "prenom": "Sacha"
     },
     {
+      "chiffre_affaire": 0,
       "nom": "Bayon",
-      "prenom": "Nolan",
-      "chiffre_affaire": 0,
-      "photo_filename": "nolan_bayon.jpg"
+      "photo_filename": "nolan_bayon.jpg",
+      "prenom": "Nolan"
     },
     {
+      "chiffre_affaire": 0,
       "nom": "Margotteau",
-      "prenom": "Thomas",
-      "chiffre_affaire": 0,
-      "photo_filename": "thomas_margotteau.jpg"
+      "photo_filename": "thomas_margotteau.jpg",
+      "prenom": "Thomas"
     },
     {
+      "chiffre_affaire": 0,
       "nom": "Blanchard",
-      "prenom": "Gauthier",
-      "chiffre_affaire": 0,
-      "photo_filename": "gauthier_blanchard.jpg"
+      "photo_filename": "gauthier_blanchard.jpg",
+      "prenom": "Gauthier"
     },
     {
-      "nom": "Michaud",
-      "prenom": "Marceau",
       "chiffre_affaire": 7380,
-      "photo_filename": "marceau_michaud.jpg"
+      "nom": "Michaud",
+      "photo_filename": "marceau_michaud.jpg",
+      "prenom": "Marceau"
     },
     {
+      "chiffre_affaire": 0,
       "nom": "Brosseau",
-      "prenom": "Antoine",
-      "chiffre_affaire": 0,
-      "photo_filename": "antoine_brosseau.jpg"
+      "photo_filename": "antoine_brosseau.jpg",
+      "prenom": "Antoine"
     },
     {
-      "nom": "Wipliez",
-      "prenom": "Aaron",
       "chiffre_affaire": 0,
-      "photo_filename": "aaron_wipliez.jpg"
+      "nom": "Wipliez",
+      "photo_filename": "aaron_wipliez.jpg",
+      "prenom": "Aaron"
     }
-  ]
+  ],
+  "chiffre_affaire_total": 21212,
+  "objectif_annuel": 100000,
+  "objectif_decembre": 35000,
+  "wr": 81000
 }

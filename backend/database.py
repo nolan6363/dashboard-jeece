@@ -21,6 +21,8 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             chiffre_affaire REAL NOT NULL,
             objectif_annuel REAL DEFAULT 100000,
+            objectif_decembre REAL DEFAULT 0,
+            wr REAL DEFAULT 0,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     ''')
@@ -48,16 +50,26 @@ def init_db():
         )
     ''')
 
+    # Table pour les autres objectifs
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS autres_objectifs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nom TEXT NOT NULL,
+            valeur REAL NOT NULL,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+
     conn.commit()
     conn.close()
 
-def save_kpi_global(chiffre_affaire, objectif_annuel=100000):
+def save_kpi_global(chiffre_affaire, objectif_annuel=100000, objectif_decembre=0, wr=0):
     """Save global KPI data."""
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
-        'INSERT INTO kpi_global (chiffre_affaire, objectif_annuel) VALUES (?, ?)',
-        (chiffre_affaire, objectif_annuel)
+        'INSERT INTO kpi_global (chiffre_affaire, objectif_annuel, objectif_decembre, wr) VALUES (?, ?, ?, ?)',
+        (chiffre_affaire, objectif_annuel, objectif_decembre, wr)
     )
     conn.commit()
     conn.close()
@@ -76,6 +88,8 @@ def get_latest_kpi_global():
         return {
             'chiffre_affaire': row['chiffre_affaire'],
             'objectif_annuel': row['objectif_annuel'],
+            'objectif_decembre': row.get('objectif_decembre', 0),
+            'wr': row.get('wr', 0),
             'timestamp': row['timestamp']
         }
     return None
@@ -160,3 +174,37 @@ def get_last_update():
     conn.close()
 
     return row['timestamp'] if row else None
+
+def save_autre_objectif(nom, valeur):
+    """Save a new 'autre objectif'."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'INSERT INTO autres_objectifs (nom, valeur) VALUES (?, ?)',
+        (nom, valeur)
+    )
+    conn.commit()
+    conn.close()
+
+def get_all_autres_objectifs():
+    """Get all 'autres objectifs'."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM autres_objectifs ORDER BY timestamp DESC')
+    rows = cursor.fetchall()
+    conn.close()
+
+    return [{
+        'id': row['id'],
+        'nom': row['nom'],
+        'valeur': row['valeur'],
+        'timestamp': row['timestamp']
+    } for row in rows]
+
+def delete_autre_objectif(objectif_id):
+    """Delete an 'autre objectif' by ID."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM autres_objectifs WHERE id = ?', (objectif_id,))
+    conn.commit()
+    conn.close()

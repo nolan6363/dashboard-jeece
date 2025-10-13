@@ -4,6 +4,9 @@ import './Admin.css';
 function Admin() {
   const [config, setConfig] = useState({
     objectif_annuel: 100000,
+    objectif_decembre: 0,
+    wr: 0,
+    autres_objectifs: [],
     chiffre_affaire_total: 0,
     chefs_projet: []
   });
@@ -17,6 +20,10 @@ function Admin() {
     chiffre_affaire: 0
   });
   const [photoFile, setPhotoFile] = useState(null);
+  const [newObjectif, setNewObjectif] = useState({
+    nom: '',
+    valeur: 0
+  });
 
   useEffect(() => {
     fetchConfig();
@@ -174,6 +181,49 @@ function Admin() {
     setMessage('✅ CDP supprimé. N\'oubliez pas de sauvegarder.');
   };
 
+  const handleObjectifDecembreChange = (e) => {
+    setConfig({
+      ...config,
+      objectif_decembre: parseFloat(e.target.value) || 0
+    });
+  };
+
+  const handleWRChange = (e) => {
+    setConfig({
+      ...config,
+      wr: parseFloat(e.target.value) || 0
+    });
+  };
+
+  const handleAddObjectif = () => {
+    if (!newObjectif.nom) {
+      setMessage('❌ Le nom de l\'objectif est obligatoire');
+      return;
+    }
+
+    const updatedObjectifs = [...config.autres_objectifs, { ...newObjectif }];
+    setConfig({
+      ...config,
+      autres_objectifs: updatedObjectifs
+    });
+
+    setNewObjectif({
+      nom: '',
+      valeur: 0
+    });
+
+    setMessage('✅ Objectif ajouté avec succès ! N\'oubliez pas de sauvegarder.');
+  };
+
+  const handleRemoveObjectif = (index) => {
+    const updatedObjectifs = config.autres_objectifs.filter((_, i) => i !== index);
+    setConfig({
+      ...config,
+      autres_objectifs: updatedObjectifs
+    });
+    setMessage('✅ Objectif supprimé. N\'oubliez pas de sauvegarder.');
+  };
+
   if (loading) {
     return <div className="admin-container"><p>Chargement...</p></div>;
   }
@@ -203,6 +253,34 @@ function Admin() {
         </section>
 
         <section className="admin-section">
+          <h2>📅 Objectif Décembre</h2>
+          <div className="input-group">
+            <label>Objectif Décembre (€)</label>
+            <input
+              type="number"
+              value={config.objectif_decembre}
+              onChange={handleObjectifDecembreChange}
+              min="0"
+              step="1000"
+            />
+          </div>
+        </section>
+
+        <section className="admin-section">
+          <h2>🏆 WR (World Record)</h2>
+          <div className="input-group">
+            <label>Record annuel de CA (€)</label>
+            <input
+              type="number"
+              value={config.wr}
+              onChange={handleWRChange}
+              min="0"
+              step="100"
+            />
+          </div>
+        </section>
+
+        <section className="admin-section">
           <h2>💰 Chiffre d'Affaires Total</h2>
           <div className="input-group">
             <label>CA Total (€)</label>
@@ -221,6 +299,66 @@ function Admin() {
           >
             🧮 Calculer automatiquement (somme des CDP)
           </button>
+        </section>
+
+        <section className="admin-section">
+          <h2>🎯 Autres Objectifs</h2>
+          <div className="add-cdp-form">
+            <div className="form-row">
+              <div className="input-group">
+                <label>Nom de l'objectif *</label>
+                <input
+                  type="text"
+                  value={newObjectif.nom}
+                  onChange={(e) => setNewObjectif({ ...newObjectif, nom: e.target.value })}
+                  placeholder="Ex: Objectif Q1, Budget formation..."
+                />
+              </div>
+              <div className="input-group">
+                <label>Valeur (€)</label>
+                <input
+                  type="number"
+                  value={newObjectif.valeur}
+                  onChange={(e) => setNewObjectif({ ...newObjectif, valeur: parseFloat(e.target.value) || 0 })}
+                  min="0"
+                  step="100"
+                  placeholder="0"
+                />
+              </div>
+            </div>
+            <button className="btn-add-cdp" onClick={handleAddObjectif}>
+              ➕ Ajouter l'objectif
+            </button>
+          </div>
+          {config.autres_objectifs && config.autres_objectifs.length > 0 && (
+            <div className="cdp-grid" style={{marginTop: '20px'}}>
+              {config.autres_objectifs.map((obj, index) => (
+                <div key={index} className="cdp-item">
+                  <button
+                    className="btn-remove-cdp"
+                    onClick={() => handleRemoveObjectif(index)}
+                    title="Supprimer cet objectif"
+                  >
+                    ✕
+                  </button>
+                  <label>{obj.nom}</label>
+                  <input
+                    type="number"
+                    value={obj.valeur}
+                    onChange={(e) => {
+                      const updatedObjectifs = [...config.autres_objectifs];
+                      updatedObjectifs[index].valeur = parseFloat(e.target.value) || 0;
+                      setConfig({ ...config, autres_objectifs: updatedObjectifs });
+                    }}
+                    min="0"
+                    step="100"
+                    placeholder="0"
+                  />
+                  <span className="currency">€</span>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
         <section className="admin-section">
