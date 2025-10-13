@@ -9,6 +9,12 @@
       "photo_filename": "benjamin_bruneau.jpg"
     },
 	{
+	  "nom": "Plane",
+	  "prenom": "Romain",
+	  "chiffre_affaire": 2100,
+	  "photo_filename": "romain_plane.jpg"
+	},
+	{
 	  "nom": "Lindemans",
 	  "prenom": "Théo",
 	  "chiffre_affaire": 7980,
