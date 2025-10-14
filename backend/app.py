@@ -9,7 +9,13 @@ import database
 import google_sheets
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={
+    r"/api/*": {
+        "origins": "*",
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 
 # Configuration
 OFFLINE_MODE = os.getenv('OFFLINE_MODE', 'false').lower() == 'true'
