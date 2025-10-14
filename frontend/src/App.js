@@ -8,7 +8,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 const DEFAULT_AVATAR = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzY2N2VlYSIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNDAiIHI9IjIwIiBmaWxsPSJ3aGl0ZSIvPjxwYXRoIGQ9Ik0yNSA4MCBRIDI1IDYwIDUwIDYwIFEgNzUgNjAgNzUgODAgWiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=';
 
 function App() {
-  const [kpi, setKpi] = useState({ chiffre_affaire: 0, objectif_annuel: 100000, timestamp: null });
+  const [kpi, setKpi] = useState({ chiffre_affaire: 0, objectif_annuel: 100000, objectif_decembre: 0, wr: 0, timestamp: null });
   const [cdps, setCdps] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -22,6 +22,7 @@ function App() {
         axios.get(`${API_URL}/last-update`)
       ]);
 
+      console.log('KPI data received:', kpiRes.data);
       setKpi(kpiRes.data);
       setCdps(cdpRes.data);
       setLastUpdate(updateRes.data.last_update);
@@ -50,10 +51,14 @@ function App() {
   useEffect(() => {
     // Initial load
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  useEffect(() => {
     // Check for updates every 5 seconds (very light request)
     const interval = setInterval(checkForUpdates, 5000);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastModified]);
 
   const formatCurrency = (amount) => {
@@ -116,13 +121,25 @@ function App() {
               <div className="progress-marker" style={{ bottom: '75%' }}></div>
               <div className="progress-marker-label" style={{ bottom: '75%', transform: 'translateY(50%)' }}>75k€</div>
 
-              {/* Objectif déc 2025 - 35k */}
-              <div className="progress-line" style={{ bottom: '35%' }}></div>
-              <div className="progress-line-label" style={{ bottom: 'calc(35% + 5px)' }}>Objectif déc 2025 (35k€)</div>
+              {/* Objectif déc 2025 */}
+              {kpi.objectif_decembre > 0 && (
+                <>
+                  <div className="progress-line" style={{ bottom: `${Math.min(100, (kpi.objectif_decembre / (kpi.objectif_annuel || 100000)) * 100)}%` }}></div>
+                  <div className="progress-line-label" style={{ bottom: `calc(${Math.min(100, (kpi.objectif_decembre / (kpi.objectif_annuel || 100000)) * 100)}% + 5px)` }}>
+                    Objectif déc 2025 ({(kpi.objectif_decembre / 1000).toFixed(0)}k€)
+                  </div>
+                </>
+              )}
 
-              {/* WR (World Record) - 68k */}
-              <div className="progress-line wr-line" style={{ bottom: '68%' }}></div>
-              <div className="progress-line-label wr-label" style={{ bottom: 'calc(68% + 5px)' }}>WR (68k€)</div>
+              {/* WR (World Record) */}
+              {kpi.wr > 0 && (
+                <>
+                  <div className="progress-line wr-line" style={{ bottom: `${Math.min(100, (kpi.wr / (kpi.objectif_annuel || 100000)) * 100)}%` }}></div>
+                  <div className="progress-line-label wr-label" style={{ bottom: `calc(${Math.min(100, (kpi.wr / (kpi.objectif_annuel || 100000)) * 100)}% + 5px)` }}>
+                    WR ({(kpi.wr / 1000).toFixed(0)}k€)
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="kpi-content">

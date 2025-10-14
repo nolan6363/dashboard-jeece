@@ -88,8 +88,8 @@ def get_latest_kpi_global():
         return {
             'chiffre_affaire': row['chiffre_affaire'],
             'objectif_annuel': row['objectif_annuel'],
-            'objectif_decembre': row.get('objectif_decembre', 0),
-            'wr': row.get('wr', 0),
+            'objectif_decembre': row['objectif_decembre'] if 'objectif_decembre' in row.keys() else 0,
+            'wr': row['wr'] if 'wr' in row.keys() else 0,
             'timestamp': row['timestamp']
         }
     return None
@@ -206,5 +206,13 @@ def delete_autre_objectif(objectif_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('DELETE FROM autres_objectifs WHERE id = ?', (objectif_id,))
+    conn.commit()
+    conn.close()
+
+def clear_autres_objectifs():
+    """Clear all 'autres objectifs'."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM autres_objectifs')
     conn.commit()
     conn.close()

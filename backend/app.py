@@ -82,7 +82,8 @@ def sync_data_from_sheets():
                 photo_filename=cdp.get('photo_filename')
             )
 
-        # Save autres objectifs
+        # Clear and save autres objectifs
+        database.clear_autres_objectifs()
         for obj in data.get('autres_objectifs', []):
             database.save_autre_objectif(obj['nom'], obj['valeur'])
 
@@ -264,6 +265,15 @@ def upload_photo():
         else:
             return jsonify({'error': 'File type not allowed. Only images are accepted.'}), 400
 
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/autres-objectifs', methods=['GET'])
+def get_autres_objectifs():
+    """Get all autres objectifs."""
+    try:
+        objectifs = database.get_all_autres_objectifs()
+        return jsonify(objectifs)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
