@@ -216,3 +216,11 @@ def clear_autres_objectifs():
     cursor.execute('DELETE FROM autres_objectifs')
     conn.commit()
     conn.close()
+
+def clear_chefs_projet():
+    """Clear all chefs de projet."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM chef_projet')
+    conn.commit()
+    conn.close()

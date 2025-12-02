@@ -79,7 +79,8 @@ def sync_data_from_sheets():
             data.get('wr', 0)
         )
 
-        # Save each CDP
+        # Clear and save each CDP
+        database.clear_chefs_projet()
         for cdp in data['cdp_list']:
             database.save_chef_projet(
                 nom=cdp['nom'],
