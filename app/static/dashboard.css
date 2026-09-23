@@ -316,17 +316,20 @@ body {
   min-height: 0;
   display: grid;
   grid-auto-flow: column;
-  grid-template-rows: repeat(var(--lignes, 4), minmax(0, 1fr));
+  /* Lignes de 5rem maximum : elles rétrécissent s'il y a beaucoup de CDP,
+     mais ne s'étirent pas s'il y en a peu. */
+  grid-template-rows: repeat(var(--lignes, 1), minmax(0, 5rem));
   grid-auto-columns: minmax(0, 1fr);
-  gap: 0.6rem;
+  align-content: start;
+  gap: 0.7rem 1rem;
 }
 
 .ligne-cdp {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 1rem;
   min-width: 0;
-  padding: 0.4rem 0.8rem;
+  padding: 0.4rem 1.2rem;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 0.6rem;
@@ -337,14 +340,14 @@ body {
   width: 1.8rem;
   flex-shrink: 0;
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 700;
   opacity: 0.8;
 }
 
 .avatar-liste {
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 3.2rem;
+  height: 3.2rem;
   border: 2px solid rgba(255, 255, 255, 0.3);
   font-size: 1rem;
 }
@@ -352,12 +355,13 @@ body {
 .ligne-cdp .nom {
   flex: 1;
   min-width: 0;
-  font-size: 1rem;
+  font-size: 1.3rem;
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .ligne-cdp .montant {
-  font-size: 1.15rem;
+  font-size: 1.4rem;
 }

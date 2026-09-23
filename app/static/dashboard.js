@@ -3,6 +3,7 @@
 
 const INTERVALLE_RAFRAICHISSEMENT = 10000; // ms
 const GRADUATIONS = [0.25, 0.5, 0.75]; // repères en % de l'objectif annuel
+const MAX_CDP_SUR_2_COLONNES = 16; // au-delà, la liste (hors podium) passe à 3 colonnes
 
 let dernieresDonnees = null;
 let versionServeur = null;
@@ -82,9 +83,9 @@ function afficherClassement(chefsProjet) {
 
   const suite = classes.slice(3);
   const liste = document.getElementById('liste');
-  // 2 colonnes pour une petite équipe, 3 au-delà : la liste remplit toujours la hauteur.
-  const colonnes = suite.length <= 6 ? 2 : 3;
-  liste.style.setProperty('--lignes', Math.max(3, Math.ceil(suite.length / colonnes)));
+  // 2 colonnes, sauf si l'équipe est trop grande pour tenir en hauteur.
+  const colonnes = suite.length > MAX_CDP_SUR_2_COLONNES ? 3 : 2;
+  liste.style.setProperty('--lignes', Math.max(1, Math.ceil(suite.length / colonnes)));
   liste.innerHTML = suite.map((cdp, i) => `
     <div class="ligne-cdp">
       <span class="rang">${i + 4}</span>
