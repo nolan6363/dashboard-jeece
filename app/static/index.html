@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard JEECE</title>
+  <link rel="icon" href="/static/logo.png">
+  <link rel="stylesheet" href="/static/dashboard.css">
+</head>
+<body>
+  <header class="entete">
+    <img src="/static/logo.png" alt="" class="logo">
+    <h1 id="titre"></h1>
+    <div class="derniere-maj">Dernière mise à jour : <span id="mis-a-jour-le">–</span></div>
+  </header>
+
+  <main class="contenu">
+    <section class="carte jauge">
+      <div class="jauge-fond" id="jauge-fond">
+        <div class="remplissage" id="remplissage"><div class="vague"></div></div>
+        <div id="reperes"></div>
+      </div>
+      <div class="jauge-texte">
+        <h2>Chiffre d'affaires total</h2>
+        <div class="ca-total" id="ca-total"></div>
+        <div class="pourcentage" id="pourcentage"></div>
+        <div class="objectif-annuel" id="objectif-annuel"></div>
+      </div>
+    </section>
+
+    <section class="carte classement">
+      <h2 class="titre-section">Classement des chefs de projet</h2>
+      <div class="podium" id="podium"></div>
+      <div class="liste" id="liste"></div>
+    </section>
+  </main>
+
+  <script src="/static/commun.js"></script>
+  <script src="/static/dashboard.js"></script>
+</body>
+</html>

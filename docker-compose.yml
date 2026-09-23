@@ -1,36 +1,15 @@
 version: '3.8'
 
 services:
-  backend:
-    build: ./backend
-    container_name: jeece_backend
+  dashboard:
+    build: ./app
+    container_name: jeece_dashboard
     ports:
-      - "5000:5000"
+      # Dashboard : http://<ip>:3000   Admin : http://<ip>:3000/admin
+      - "3000:3000"
     volumes:
-      - ./backend:/app
-      - ./data:/app/data
-      - ./credentials:/app/credentials
-      - ./config.json:/app/config.json
-    env_file:
-      - .env
+      # Tout le dépôt est monté : le code (app/) et les données (data/).
+      - .:/srv
+    environment:
+      - TZ=Europe/Paris
     restart: unless-stopped
-    networks:
-      - jeece_network
-
-  frontend:
-    build: ./frontend
-    container_name: jeece_frontend
-    ports:
-      - "3000:80"
-    depends_on:
-      - backend
-    restart: unless-stopped
-    networks:
-      - jeece_network
-
-networks:
-  jeece_network:
-    driver: bridge
-
-volumes:
-  data:

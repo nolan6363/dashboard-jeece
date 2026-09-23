@@ -1,0 +1,317 @@
+/* Page d'administration : utilisable sur ordinateur comme sur téléphone. */
+
+:root {
+  --vert: #2d8044;
+  --vert-clair: #3fad5d;
+  --rouge: #d64545;
+  --orange: #b7791f;
+  --texte: #1f2d27;
+  --texte-doux: #5f6f68;
+  --bordure: #d5ddd9;
+  --fond: #eef3f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding-bottom: 5rem; /* place pour la barre « Enregistrer » */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  color: var(--texte);
+  background: var(--fond);
+}
+
+.barre-haut {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  padding: 1rem 1.5rem;
+  color: white;
+  background: linear-gradient(135deg, #1a3a2e 0%, #0d1f19 100%);
+}
+
+.barre-haut .logo {
+  height: 2.5rem;
+}
+
+.barre-haut h1 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.barre-haut nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.barre-haut a {
+  color: white;
+  font-weight: 600;
+}
+
+main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.bloc {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.bloc h2 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+}
+
+.compteur {
+  color: var(--texte-doux);
+  font-weight: normal;
+}
+
+.aide,
+.vide {
+  margin: -0.5rem 0 1rem;
+  color: var(--texte-doux);
+  font-size: 0.9rem;
+}
+
+.champs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+.case {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.case input {
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: var(--vert);
+}
+
+input:not([type='checkbox']):not([type='color']) {
+  width: 100%;
+  min-width: 0;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  border: 2px solid var(--bordure);
+  border-radius: 0.4rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--vert-clair);
+}
+
+input:disabled {
+  color: var(--texte-doux);
+  background: var(--fond);
+}
+
+input.invalide {
+  border-color: var(--rouge);
+  background: #fdf0f0;
+}
+
+/* Listes (objectifs, chefs de projet) */
+.lignes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.ligne {
+  display: grid;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.ligne-objectif {
+  grid-template-columns: 1fr 10rem 3rem auto;
+}
+
+.ligne-cdp {
+  grid-template-columns: auto 1fr 1fr 10rem auto;
+}
+
+input[type='color'] {
+  width: 3rem;
+  height: 2.6rem;
+  padding: 0.2rem;
+  border: 2px solid var(--bordure);
+  border-radius: 0.4rem;
+  background: white;
+  cursor: pointer;
+}
+
+.bouton-photo {
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.bouton-photo:hover .avatar,
+.bouton-photo:focus-visible .avatar {
+  outline: 3px solid var(--vert-clair);
+}
+
+.avatar {
+  display: block;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-admin {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
+.avatar-initiales {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background: var(--vert);
+  font-weight: 700;
+}
+
+/* Boutons */
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.bouton-principal,
+.bouton-secondaire {
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.4rem;
+  font-weight: 600;
+}
+
+.bouton-principal {
+  color: white;
+  background: var(--vert);
+  border: 2px solid var(--vert);
+}
+
+.bouton-secondaire {
+  color: var(--vert);
+  background: white;
+  border: 2px solid var(--vert);
+}
+
+.bouton-supprimer {
+  width: 2.2rem;
+  height: 2.2rem;
+  color: var(--rouge);
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 50%;
+}
+
+.bouton-supprimer:hover {
+  border-color: var(--rouge);
+}
+
+/* Barre « Enregistrer », toujours visible en bas */
+.barre-enregistrer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.statut {
+  flex: 1;
+  color: var(--texte-doux);
+}
+
+.statut.attention {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+.statut.succes {
+  color: var(--vert);
+  font-weight: 600;
+}
+
+.statut.erreur {
+  color: var(--rouge);
+  font-weight: 600;
+}
+
+/* Téléphone */
+@media (max-width: 40rem) {
+  .bloc {
+    padding: 1rem;
+  }
+
+  .ligne-objectif {
+    grid-template-columns: 1fr 3rem auto;
+  }
+
+  .ligne-objectif [data-cle='valeur'] {
+    grid-column: 1 / 2;
+    grid-row: 2;
+  }
+
+  .ligne-cdp {
+    grid-template-columns: auto 1fr 1fr auto;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--bordure);
+  }
+
+  .ligne-cdp [data-cle='chiffre_affaire'] {
+    grid-column: 2 / 4;
+    grid-row: 2;
+  }
+
+  .barre-enregistrer {
+    flex-wrap: wrap;
+    padding: 0.6rem 1rem;
+  }
+
+  .statut {
+    flex-basis: 100%;
+    font-size: 0.9rem;
+  }
+}

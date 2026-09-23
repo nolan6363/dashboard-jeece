@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Administration – Dashboard JEECE</title>
+  <link rel="icon" href="/static/logo.png">
+  <link rel="stylesheet" href="/static/admin.css">
+</head>
+<body>
+  <header class="barre-haut">
+    <img src="/static/logo.png" alt="" class="logo">
+    <h1>Administration du dashboard</h1>
+    <nav>
+      <a href="/" target="_blank">Voir le dashboard</a>
+      <a href="/api/sauvegarde">Télécharger une sauvegarde</a>
+    </nav>
+  </header>
+
+  <main id="formulaire" hidden>
+    <section class="bloc">
+      <h2>Chiffres clés</h2>
+      <div class="champs">
+        <label class="champ">
+          <span>Chiffre d'affaires total (€)</span>
+          <input data-champ="chiffre_affaire_total" data-nombre inputmode="decimal" autocomplete="off">
+        </label>
+        <label class="champ">
+          <span>Objectif annuel (€)</span>
+          <input data-champ="objectif_annuel" data-nombre inputmode="decimal" autocomplete="off">
+        </label>
+      </div>
+      <label class="case">
+        <input type="checkbox" data-champ="total_automatique">
+        Calculer le total automatiquement (somme des CA des chefs de projet)
+      </label>
+    </section>
+
+    <section class="bloc">
+      <h2>Objectifs affichés sur la jauge</h2>
+      <p class="aide">Chaque objectif apparaît comme une ligne pointillée sur la jauge : objectif intermédiaire, record à battre…</p>
+      <div id="objectifs" class="lignes"></div>
+      <button type="button" class="bouton-secondaire" data-action="ajouter-objectif">+ Ajouter un objectif</button>
+    </section>
+
+    <section class="bloc">
+      <h2>Chefs de projet <span id="nombre-cdp" class="compteur"></span></h2>
+      <p class="aide">Clique sur une photo pour la changer. Le classement se fait automatiquement selon le CA.</p>
+      <div id="chefs-projet" class="lignes"></div>
+      <button type="button" class="bouton-secondaire" data-action="ajouter-cdp">+ Ajouter un chef de projet</button>
+    </section>
+
+    <section class="bloc">
+      <h2>Affichage</h2>
+      <div class="champs">
+        <label class="champ">
+          <span>Titre du dashboard</span>
+          <input data-champ="titre" autocomplete="off">
+        </label>
+      </div>
+      <label class="case">
+        <input type="checkbox" data-champ="animations">
+        Animer la vague de la jauge (à désactiver si l'affichage manque de fluidité)
+      </label>
+    </section>
+  </main>
+
+  <footer class="barre-enregistrer">
+    <span id="statut" class="statut">Chargement…</span>
+    <button type="button" id="annuler" class="bouton-secondaire" disabled>Annuler</button>
+    <button type="button" id="enregistrer" class="bouton-principal" disabled>Enregistrer</button>
+  </footer>
+
+  <input type="file" id="choix-photo" accept="image/*" hidden>
+
+  <script src="/static/commun.js"></script>
+  <script src="/static/admin.js"></script>
+</body>
+</html>
