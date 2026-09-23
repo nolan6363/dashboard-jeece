@@ -222,7 +222,7 @@ def _nombre(valeur, libelle):
 
 
 def _arrondir(nombre):
-    nombre = round(nombre, 2)
+    nombre = round(float(nombre), 2)
     return int(nombre) if nombre.is_integer() else nombre
 
 
