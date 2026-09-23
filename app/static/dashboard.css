@@ -316,11 +316,10 @@ body {
   min-height: 0;
   display: grid;
   grid-auto-flow: column;
-  /* Lignes de 5rem maximum : elles rétrécissent s'il y a beaucoup de CDP,
-     mais ne s'étirent pas s'il y en a peu. */
-  grid-template-rows: repeat(var(--lignes, 1), minmax(0, 5rem));
+  /* Les lignes se partagent la hauteur restante sous le podium, avec au plus
+     18 % chacune pour ne pas être démesurées s'il y a peu de CDP. */
+  grid-template-rows: repeat(var(--lignes, 1), minmax(0, 18%));
   grid-auto-columns: minmax(0, 1fr);
-  align-content: start;
   gap: 0.7rem 1rem;
 }
 
